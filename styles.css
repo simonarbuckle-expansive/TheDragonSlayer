@@ -32,6 +32,10 @@ body {
   background-color: #c70d0d;
 }
 
+#button4 {
+  display: none;
+}
+
 .stat {
   padding-right: 10px;
 }
