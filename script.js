@@ -9,6 +9,7 @@ let inventory = ["stick"];
 const button1 = document.querySelector("#button1");
 const button2 = document.querySelector("#button2");
 const button3 = document.querySelector("#button3");
+const button4 = document.querySelector("#button4");
 const text = document.querySelector("#text");
 const xpText = document.querySelector("#xpText");
 const healthText = document.querySelector("#healthText");
@@ -16,11 +17,13 @@ const goldText = document.querySelector("#goldText");
 const monsterStats = document.querySelector("#monsterStats");
 const monsterName = document.querySelector("#monsterName");
 const monsterHealthText = document.querySelector("#monsterHealth");
+
 const weapons = [
   { name: "stick", power: 5 },
   { name: "dagger", power: 30 },
   { name: "claw hammer", power: 50 },
   { name: "sword", power: 100 },
+  { name: "wand", power: 150 },
 ];
 const monsters = [
   {
@@ -37,6 +40,11 @@ const monsters = [
     name: "dragon",
     level: 20,
     health: 300,
+  },
+  {
+    name: "minotaur",
+    level: 16,
+    health: 120,
   },
 ];
 const locations = [
@@ -58,8 +66,13 @@ const locations = [
   },
   {
     name: "cave",
-    "button text": ["Fight slime", "Fight fanged beast", "Go to town square"],
-    "button functions": [fightSlime, fightBeast, goTown],
+    "button text": [
+      "Fight slime",
+      "Fight fanged beast",
+      "Fight minotaur",
+      "Go to town square",
+    ],
+    "button functions": [fightSlime, fightBeast, fightMinotaur, goTown],
     text: "You enter the cave. You see some monsters.",
   },
   {
@@ -102,9 +115,11 @@ const locations = [
 button1.onclick = goStore;
 button2.onclick = goCave;
 button3.onclick = fightDragon;
+button4.style.display = "none";
 
 function update(location) {
   monsterStats.style.display = "none";
+  button4.style.display = "none";
   button1.innerText = location["button text"][0];
   button2.innerText = location["button text"][1];
   button3.innerText = location["button text"][2];
@@ -124,6 +139,9 @@ function goStore() {
 
 function goCave() {
   update(locations[2]);
+  button4.onclick = locations[2]["button functions"][3];
+  button4.innerText = locations[2]["button text"][3];
+  button4.style.display = "inline-block";
 }
 
 function buyHealth() {
@@ -176,6 +194,11 @@ function fightSlime() {
 
 function fightBeast() {
   fighting = 1;
+  goFight();
+}
+
+function fightMinotaur() {
+  fighting = 3;
   goFight();
 }
 
@@ -279,7 +302,7 @@ function pick(guess) {
   for (let i = 0; i < 10; i++) {
     text.innerText += numbers[i] + "\n";
   }
-  if (numbers.includes(guess)) {
+  if (numbers.indexOf(guess) !== -1) {
     text.innerText += "Right! You win 20 gold!";
     gold += 20;
     goldText.innerText = gold;
